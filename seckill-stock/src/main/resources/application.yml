@@ -1,0 +1,104 @@
+##########################################################
+##
+## 端口，app名字等应用基础配置
+##
+##########################################################
+server:
+  port: 8083
+
+spring:
+  application:
+    name: stock
+
+  ##########################################################
+  ##
+  ## mysql 数据源配置
+  ##
+  ##########################################################
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.56.254:3306/seckill?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    username: root
+    password: 123456
+    druid:
+      # 初始化大小，最小，最大
+      initial-size: 5
+      min-idle: 5
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall
+      # 通过connectProperties属性来打开mergeSql功能，慢SQL记录
+      connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      # 配置DruidStatFilter
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      # 配置DruidStatViewServlet
+      stat-view-servlet:
+        url-pattern: "/druid/*"
+        # IP白名单(没有配置或者为空，则允许所有访问)
+        allow:
+        # IP黑名单(存在共同时，deny优先于allow)
+        deny:
+        # 禁用HTML页面上的“Reset All”功能
+        reset-enable: false
+        # 登录名
+        login-username: admin
+        # 登录密码
+        login-password: 123456
+
+  ##########################################################
+  ##
+  ## redis 数据源配置
+  ##
+  ##########################################################
+  redis:
+    database: 0
+    host: 192.168.56.254
+    port: 6379
+    password: 123456
+    jedis:
+      pool:
+        # 最大空闲连接数
+        max-idle: 500
+        # 最小空闲连接数
+        min-idle: 50
+        # 等待可用连接的最大时间
+        max-wait: -1
+        # 最大活跃连接数
+        max-active: -1
+
+  ##########################################################
+  ##
+  ## 微服务配置
+  ##
+  ##########################################################
+  cloud:
+    nacos:
+      discovery:
+        ip: 10.20.0.1:8848
+
+##########################################################
+##
+## 服务地址配置
+##
+##########################################################
+service-url:
+  order-service: http://order
+  time-service: http://time
+  goods-service: http://gooods
