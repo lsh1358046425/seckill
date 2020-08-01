@@ -26,10 +26,12 @@
         <fastjson.version>1.2.70</fastjson.version>
         <springboot.version>2.2.0.RELEASE</springboot.version>
         <druid.version>1.1.21</druid.version>
+        <springfox-swagger.version>2.7.0</springfox-swagger.version>
         <mysql.connector.version>8.0.19</mysql.connector.version>
         <springcloud.version>Hoxton.SR3</springcloud.version>
-        <mybatis.plus.version>3.2.0</mybatis.plus.version>
-        <nacos.version>2.2.0.RELEASE</nacos.version>
+        <springcloud.alibaba.version>2.2.0.RELEASE</springcloud.alibaba.version>
+        <mybatis.plus.version>3.3.0</mybatis.plus.version>
+        <dozer.version>6.4.0</dozer.version>
     </properties>
 
     <dependencyManagement>
@@ -50,13 +52,10 @@
             </dependency>
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-                <version>${nacos.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-                <version>${nacos.version}</version>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${springcloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -74,6 +73,16 @@
                 <version>${mybatis.plus.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.connector.version}</version>
@@ -87,6 +96,26 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox-swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.dozermapper</groupId>
+                <artifactId>dozer-core</artifactId>
+                <version>${dozer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.dozermapper</groupId>
+                <artifactId>dozer-spring-boot-starter</artifactId>
+                <version>${dozer.version}</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

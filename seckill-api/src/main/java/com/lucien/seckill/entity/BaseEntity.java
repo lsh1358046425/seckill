@@ -1,4 +1,4 @@
-package com.lucien.seckill.entity.po;
+package com.lucien.seckill.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

@@ -30,14 +30,14 @@ public class RedisConfiguration extends CachingConfigurerSupport {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
 
-        FastJsonRedisSerializer<Object> serializer = new FastJsonRedisSerializer<Object>(Object.class);
+        FastJsonRedisSerializer<Object> serializer = new FastJsonRedisSerializer<>(Object.class);
         /*
-          value使用fastJsonRedisSerializer
+        value使用fastJsonRedisSerializer
          */
         template.setValueSerializer(serializer);
         template.setHashValueSerializer(serializer);
         /*
-          key使用StringRedisSerializer
+        key使用StringRedisSerializer
          */
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
@@ -48,27 +48,26 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {
         /*
-            生成一个默认配置，通过config对象即可对缓存进行自定义配置
+        生成一个默认配置，通过config对象即可对缓存进行自定义配置
          */
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
         /*
-            设置缓存的默认过期时间，也是使用Duration设置
+        设置缓存的默认过期时间，也是使用Duration设置
          */
-        config = config.entryTtl(Duration.ofMinutes(1))
-                .disableCachingNullValues();
+        config = config.entryTtl(Duration.ofMinutes(1));
         /*
-            设置一个初始化的缓存空间set集合
+        设置一个初始化的缓存空间set集合
          */
         Set<String> cacheNames =  new HashSet<>();
         cacheNames.add("seckill-goods");
         /*
-            对每个缓存空间应用不同的配置
+        对每个缓存空间应用不同的配置
          */
         Map<String, RedisCacheConfiguration> configMap = new HashMap<>();
         configMap.put("seckill-goods", config.entryTtl(Duration.ZERO));
         /*
-            使用自定义的缓存配置初始化一个cacheManager
-            注意这两句的调用顺序，一定要先调用该方法设置初始化的缓存名，再初始化相关的配置
+        使用自定义的缓存配置初始化一个cacheManager
+        注意这两句的调用顺序，一定要先调用该方法设置初始化的缓存名，再初始化相关的配置
          */
         return RedisCacheManager.builder(factory)
                 .initialCacheNames(cacheNames)

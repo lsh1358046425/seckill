@@ -1,10 +1,11 @@
 package com.lucien.seckill.controller;
 
-import lombok.extern.slf4j.Slf4j;
+import com.lucien.seckill.api.TimeControllerApi;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author Lucien
@@ -13,10 +14,11 @@ import java.util.Date;
  */
 
 @RestController
-@Slf4j
-public class TimeController {
+@RequestMapping("/time")
+public class TimeController implements TimeControllerApi {
+
     @GetMapping("/getTime")
-    public Date getTime(){
-        return new Date();
+    public LocalDateTime getTime(){
+        return LocalDateTime.now();
     }
 }

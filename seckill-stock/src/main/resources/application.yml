@@ -71,7 +71,6 @@ spring:
     database: 0
     host: 192.168.56.254
     port: 6379
-    password: 123456
     jedis:
       pool:
         # 最大空闲连接数
@@ -91,7 +90,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        ip: 10.20.0.1:8848
+        server-addr: 10.20.0.1:8848
 
 ##########################################################
 ##
@@ -102,3 +101,19 @@ service-url:
   order-service: http://order
   time-service: http://time
   goods-service: http://gooods
+  stock-service: http://stock
+
+##########################################################
+##
+## mybatis-plus配置
+##
+##########################################################
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  typeAliasesPackage: com.lucien.seckill.entity.po
+  global-config:
+    db-config:
+      table-underline: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false

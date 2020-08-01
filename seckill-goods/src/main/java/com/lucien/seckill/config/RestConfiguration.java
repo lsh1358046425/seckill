@@ -8,14 +8,16 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author Lucien
  * @version 1.0
- * @date 2020/7/21 15:53
+ * @date 2020/7/28 23:35
  */
 
 @Configuration
 public class RestConfiguration {
+
     @Bean
     @LoadBalanced
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
+    
 }
