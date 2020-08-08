@@ -1,13 +1,14 @@
 package com.lucien.seckill.controller;
 
+import com.lucien.seckill.api.StockControllerAPI;
+import com.lucien.seckill.entity.GeneralConvertor;
+import com.lucien.seckill.entity.domain.StockDO;
+import com.lucien.seckill.entity.dto.StockDTO;
+import com.lucien.seckill.entity.vo.StockVO;
 import com.lucien.seckill.service.impl.StockServiceImpl;
-import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Lucien
@@ -19,13 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/stock")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class StockController {
+public class StockController implements StockControllerAPI {
 
     final private StockServiceImpl stockService;
+    final private GeneralConvertor convertor;
 
     @GetMapping("/queryStockByCache/{goodsId}")
     public Integer queryStockByCache(@PathVariable Integer goodsId){
         return stockService.queryStockByCache(goodsId);
     }
+
+    @PostMapping("/addStock")
+    public StockVO addStock(@RequestBody StockDTO stockDTO) {
+        StockDO stockDO = convertor.convertor(stockDTO, StockDO.class);
+        return convertor.convertor(stockService.addStock(stockDO), StockVO.class);
+    }
+
 
 }

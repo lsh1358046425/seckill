@@ -1,8 +1,5 @@
-package com.lucien.seckill.entity.domain;
+package com.lucien.seckill.entity.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.lucien.seckill.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,14 +10,14 @@ import java.io.Serializable;
 /**
  * @author Lucien
  * @version 1.0
- * @date 2020/7/30 22:50
+ * @date 2020/8/3 17:11
  */
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="StockDO对象", description="")
-public class StockDO implements Serializable {
+@ApiModel(value="StockDTO对象", description="")
+public class StockDTO implements Serializable {
 
     private Integer stockId;
 

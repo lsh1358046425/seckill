@@ -41,5 +41,4 @@ public class GoodsDO extends BaseEntity implements Serializable {
     private LocalDateTime endTime;
 
     private Integer stockNum;
-
 }

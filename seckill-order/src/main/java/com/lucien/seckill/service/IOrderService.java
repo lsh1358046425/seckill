@@ -1,5 +1,6 @@
 package com.lucien.seckill.service;
 
+import com.lucien.seckill.entity.domain.OrderDO;
 import com.lucien.seckill.entity.po.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-07-24
  */
 public interface IOrderService extends IService<Order> {
+
+    OrderDO createOrder(Integer goodsId);
 
 }

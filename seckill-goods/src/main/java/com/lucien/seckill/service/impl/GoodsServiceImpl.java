@@ -2,8 +2,10 @@ package com.lucien.seckill.service.impl;
 
 import com.lucien.seckill.entity.GeneralConvertor;
 import com.lucien.seckill.entity.domain.GoodsDO;
+import com.lucien.seckill.entity.dto.StockDTO;
 import com.lucien.seckill.entity.po.Goods;
-import com.lucien.seckill.entity.vo.GoodsVO;
+import com.lucien.seckill.entity.vo.StockVO;
+import com.lucien.seckill.exception.NotGoodsException;
 import com.lucien.seckill.exception.NotModifiableException;
 import com.lucien.seckill.mapper.GoodsMapper;
 import com.lucien.seckill.service.IGoodsService;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,11 +41,12 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     final private GeneralConvertor convertor;
     final private TimeClientService timeClientService;
     final private StockClientService stockClientService;
+    final private RedisTemplate<Object, Object> redisTemplate;
 
     @Transactional
     @CachePut(value = "seckill-goods", key = "#goodsDo.goodsId")
     @Override
-    public GoodsVO updateGoods(GoodsDO goodsDo) {
+    public GoodsDO updateGoods(GoodsDO goodsDo) {
         /*
         开始秒杀前五分钟禁止修改
          */
@@ -52,11 +56,11 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             throw new NotModifiableException();
         }
         Goods goods = convertor.convertor(goodsDo, Goods.class);
+        redisTemplate.delete("seckill-stock::" + goods.getGoodsId());
         updateById(goods);
-        // TODO: 2020/7/30 redis
-        GoodsVO goodsVO = convertor.convertor(goods, GoodsVO.class);
+        GoodsDO goodsDO = convertor.convertor(goods, GoodsDO.class);
         log.info("更新Goods，goodsId : {}", goods.getGoodsId());
-        return goodsVO;
+        return goodsDO;
     }
 
     @Transactional
@@ -71,28 +75,32 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         if (now.compareTo(startTime) >= 0){
             throw new NotModifiableException();
         }
+        redisTemplate.delete("seckill-stock::" + goodsId);
         log.info("删除Goods，goodsId为: {}", goodsId);
         return removeById(goodsId);
     }
 
     @Cacheable(value = "seckill-goods", key = "#goodsId")
     @Override
-    public GoodsVO queryGoods(Integer goodsId) {
+    public GoodsDO queryGoods(Integer goodsId) {
         log.info("查找Goods，goodsId为: {}", goodsId);
         Goods goods = getById(goodsId);
-        GoodsVO goodsVO = this.convertor.convertor(goods, GoodsVO.class);
-        Integer stockNum = stockClientService.queryStockByCache(goodsId);
-        goodsVO.setStockNum(stockNum);
-        return goodsVO;
+        if (null == goods) {
+            throw new NotGoodsException();
+        }
+        return convertor.convertor(goods, GoodsDO.class);
     }
 
-
     @Override
-    public GoodsVO addGoods(GoodsDO goodsDo) {
+    // TODO: 2020/8/7 全局事务
+    public GoodsDO addGoods(GoodsDO goodsDo) {
         Goods goods = convertor.convertor(goodsDo, Goods.class);
         save(goods);
+        StockDTO stockDTO = convertor.convertor(goods, StockDTO.class);
+        stockDTO.setStockNum(goodsDo.getStockNum());
+        StockVO stockVO = stockClientService.addStock(stockDTO);
         log.info("添加Goods，goodsId为: {}", goods.getGoodsId());
-        return convertor.convertor(goods, GoodsVO.class);
+        return convertor.convertor(goods, GoodsDO.class).setStockNum(stockVO.getStockNum());
     }
 
 }

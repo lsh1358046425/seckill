@@ -4,10 +4,14 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.lucien.seckill.entity.po.Stock">
-        <id column="goods_id" property="goodsId" />
+        <id column="stock_id" property="stockId" />
+        <result column="goods_id" property="goodsId" />
         <result column="stock_num" property="stockNum" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
     </resultMap>
 
+    <update id="decrStockByGoodsId">
+        update stock set stock_num = stock_num - 1 where goods_id = #{goodsId} and stock_num >= 0;
+    </update>
 </mapper>

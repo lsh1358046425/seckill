@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface StockMapper extends BaseMapper<Stock> {
 
+     Integer decrStockByGoodsId(Integer goodsId);
+
 }

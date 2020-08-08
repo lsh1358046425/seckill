@@ -3,7 +3,6 @@ package com.lucien.seckill.service;
 import com.lucien.seckill.entity.domain.StockDO;
 import com.lucien.seckill.entity.po.Stock;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lucien.seckill.entity.vo.StockVO;
 
 /**
  * <p>
@@ -15,8 +14,9 @@ import com.lucien.seckill.entity.vo.StockVO;
  */
 public interface IStockService extends IService<Stock> {
 
-    Integer queryStockByCache(Integer GoodsId);
+    Integer queryStockByCache(Integer goodsId);
 
-    StockVO addStock(StockDO stockDO);
+    StockDO addStock(StockDO stockDO);
 
+    Integer decrStock(Integer goodsId);
 }

@@ -1,6 +1,7 @@
 package com.lucien.seckill.handler;
 
 import com.lucien.seckill.entity.vo.ResponseVO;
+import com.lucien.seckill.exception.NotGoodsException;
 import com.lucien.seckill.exception.NotModifiableException;
 import com.lucien.seckill.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 处理通用异常
+     * 处理不可修改异常
      * @param request
      * @param e
      * @return
@@ -42,6 +43,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = NotModifiableException.class)
     @ResponseBody
     public ResponseVO NotModifiableExceptionHandler(HttpServletRequest request, NotModifiableException e){
+        log.error(e.getResponseEnum().getMessage(), e);
+        return ResponseUtils.error(e.getResponseEnum());
+    }
+
+    /**
+     * 处理商品不存在异常
+     * @param request
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = NotGoodsException.class)
+    @ResponseBody
+    public ResponseVO NotGoodsExceptionHandler(HttpServletRequest request, NotGoodsException e){
         log.error(e.getResponseEnum().getMessage(), e);
         return ResponseUtils.error(e.getResponseEnum());
     }

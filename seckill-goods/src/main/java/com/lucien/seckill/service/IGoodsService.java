@@ -14,11 +14,11 @@ import com.lucien.seckill.entity.vo.GoodsVO;
  * @since 2020-07-24
  */
 public interface IGoodsService extends IService<Goods> {
-    GoodsVO updateGoods(GoodsDO goodsDo);
+    GoodsDO updateGoods(GoodsDO goodsDo);
 
     Boolean removeGoods(Integer goodsId);
 
-    GoodsVO queryGoods(Integer goodsId);
+    GoodsDO queryGoods(Integer goodsId);
 
-    GoodsVO addGoods(GoodsDO goodsDo);
+    GoodsDO addGoods(GoodsDO goodsDo);
 }

@@ -5,12 +5,12 @@ import com.lucien.seckill.entity.enums.ResponseEnum;
 /**
  * @author Lucien
  * @version 1.0
- * @date 2020/7/30 20:34
+ * @date 2020/8/3 18:06
  */
-public class NotModifiableException extends RuntimeException {
+public class NotGoodsException extends RuntimeException {
 
     public ResponseEnum getResponseEnum() {
-        return ResponseEnum.NOT_MODIFIABLE_ERROR;
+        return ResponseEnum.NOT_GOODS_ERROR;
     }
 
 }

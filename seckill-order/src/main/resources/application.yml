@@ -64,6 +64,26 @@ spring:
 
   ##########################################################
   ##
+  ## redis 数据源配置
+  ##
+  ##########################################################
+  redis:
+    database: 0
+    host: 192.168.56.254
+    port: 6379
+    jedis:
+      pool:
+        # 最大空闲连接数
+        max-idle: 500
+        # 最小空闲连接数
+        min-idle: 50
+        # 等待可用连接的最大时间
+        max-wait: -1
+        # 最大活跃连接数
+        max-active: -1
+
+  ##########################################################
+  ##
   ## 微服务配置
   ##
   ##########################################################
@@ -71,6 +91,39 @@ spring:
     nacos:
       discovery:
         server-addr: 10.20.0.1:8848
+
+  ##########################################################
+  ##
+  ## RabbitMQ配置
+  ##
+  ##########################################################
+  rabbitmq:
+    host: 192.168.56.254
+    port: 5762
+    username: guest
+    password: guest
+    # 开启发送失败回退
+    publisher-returns: true
+    publisher-confirm-type: correlated
+    listener:
+      direct:
+        # 手动ack
+        acknowledge-mode: manual
+        # 限制每次发送一条数据
+        prefetch: 1
+        #重试策略相关配置
+        retry:
+          enabled: true #是否支持重试
+          max-attempts: 5
+          stateless: false
+          #时间策略乘数因子
+          multiplier: 1.0
+          initial-interval: 1000ms
+          max-interval: 10000ms
+      simple:
+        # 手动ack
+        acknowledge-mode: manual
+
 
 ##########################################################
 ##

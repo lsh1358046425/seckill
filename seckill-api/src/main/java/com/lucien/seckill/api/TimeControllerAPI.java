@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 
 @Api(value = "Time Api",tags = "Time Api")
-public interface TimeControllerApi {
+public interface TimeControllerAPI {
     @ApiOperation(value = "获取时间")
     LocalDateTime getTime();
 }
